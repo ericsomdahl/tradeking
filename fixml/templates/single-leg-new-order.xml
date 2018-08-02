@@ -1,0 +1,7 @@
+{% extends "base.xml" %}
+{% block order %}
+  <Order TmInForce="{{ time_in_force }}" Typ="{{ order_type }}" Side="{{ order_side }}" Acct="{{ account }}">
+    <Instrmt SecTyp="{{ security_type }}" Sym="{{ symbol }}"/>
+    <OrdQty Qty="{{ quantity }}"/>
+  </Order>
+{% endblock %}
