@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='Tradeking',
-      version='0.1-dev',
+      version='0.1',
       packages=['tradeking', ],
       description='TradeKing API Calls',
       author='Jeff Gregory, Eric Somdahl',
