@@ -16,7 +16,7 @@ class TestFixMlRequests(unittest.TestCase):
 
     def test_timeInForce_presentForOtherOrders(self):
         actual = self.sut.get_new_single_leg_order(account="123", time_in_force=self.sut.TIME_IN_FORCE_GTC,
-                                                   price_type=self.sut.PRICE_TYPE_LIMIT)
+                                                   price_type=self.sut.PRICE_TYPE_LIMIT, price=20.0)
         self.assertRegexpMatches(actual, '.*TmInForce.*')
 
         actual = self.sut.get_new_single_leg_order(account="123", time_in_force=self.sut.TIME_IN_FORCE_GTC,
@@ -24,7 +24,7 @@ class TestFixMlRequests(unittest.TestCase):
         self.assertRegexpMatches(actual, '.*TmInForce.*')
 
         actual = self.sut.get_new_single_leg_order(account="123", time_in_force=self.sut.TIME_IN_FORCE_GTC,
-                                                   price_type=self.sut.PRICE_TYPE_STOP_LIMIT)
+                                                   price_type=self.sut.PRICE_TYPE_STOP_LIMIT, price=20.0)
         self.assertRegexpMatches(actual, '.*TmInForce.*')
 
         actual = self.sut.get_new_single_leg_order(account="123", time_in_force=self.sut.TIME_IN_FORCE_GTC,
@@ -33,3 +33,10 @@ class TestFixMlRequests(unittest.TestCase):
 
     def test_account_valueIsRequired(self):
         self.assertRaisesRegexp(Exception, 'Account value is required', self.sut.get_new_single_leg_order)
+
+    def test_px_price_valueRequiredForLimit(self):
+        self.assertRaisesRegexp(Exception, 'Price is required', self.sut.get_new_single_leg_order,
+                                account="123", price_type=self.sut.PRICE_TYPE_LIMIT)
+
+        self.assertRaisesRegexp(Exception, 'Price is required', self.sut.get_new_single_leg_order,
+                                account="123", price_type=self.sut.PRICE_TYPE_STOP_LIMIT)

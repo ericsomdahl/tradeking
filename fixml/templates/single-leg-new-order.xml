@@ -2,7 +2,12 @@
 {% block order %}
   <Order>
     {% if price_type != 1 %} TmInForce="{{ time_in_force }}" {% endif %}
-        Typ="{{ price_type }}" Side="{{ order_side }}" Acct="{{ account }}">
+    Typ="{{ price_type }}"
+    {% if price_type in [2,4] %} Px="{{ price }}" {% endif %}
+    Side="{{ order_side }}"
+    Acct="{{ account }}"
+    {% if price_type == 'P' %} ExecInst="a" {% endif %}
+    >
     <Instrmt SecTyp="{{ security_type }}" Sym="{{ symbol }}"/>
     <OrdQty Qty="{{ quantity }}"/>
   </Order>

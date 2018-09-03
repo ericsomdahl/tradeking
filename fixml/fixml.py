@@ -17,6 +17,9 @@ class FixMLRequests(object):
     SIDE_SELL_SHORT = 5
     SIDE_BUY_TO_COVER = 1
 
+    TRAILING_STOP_OFFSET_TYPE_PRICE = 0
+    TRAILING_STOP_OFFSET_TYPE_BASIS = 1
+
     SECURITY_TYPE_COMMON_STOCK = "CS"
     SECURITY_TYPE_OPTION = "OPT"
 
@@ -29,11 +32,13 @@ class FixMLRequests(object):
         )
 
     def get_new_single_leg_order(self, account=None, symbol=None, quantity=0, security_type=None, side=0,
-                                 time_in_force=0,
-                                 price_type=PRICE_TYPE_MARKET):
+                                 time_in_force=0, price_type=PRICE_TYPE_MARKET, price=None):
         if account is None:
             raise Exception('Account value is required')
 
+        if price_type in [FixMLRequests.PRICE_TYPE_LIMIT, FixMLRequests.PRICE_TYPE_STOP_LIMIT] and price is None:
+            raise Exception('Price is required for Limit orders')
+
         template = self.env.get_template('single-leg-new-order.xml')
         return template.render(account=account, symbol=symbol, quantity=quantity, security_type=security_type,
-                               order_side=side, time_in_force=time_in_force, price_type=price_type)
+                               order_side=side, time_in_force=time_in_force, price_type=price_type, price=price)
