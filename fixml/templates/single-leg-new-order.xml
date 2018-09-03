@@ -1,6 +1,6 @@
 {% extends "base.xml" %}
 {% block order %}
-  <Order>
+  <Order
     {% if price_type != 1 %} TmInForce="{{ time_in_force }}" {% endif %}
     Typ="{{ price_type }}"
     {% if price_type in [2,4] %} Px="{{ price }}" {% endif %}
