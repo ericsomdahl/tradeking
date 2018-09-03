@@ -1,10 +1,10 @@
 import os
-import requests
 
+import requests
 from requests_oauthlib import OAuth1
 
-class TradeKingAPI(object):
 
+class TradeKingAPI(object):
     HOST = 'https://api.tradeking.com/v1'
 
     def __init__(self,
@@ -19,8 +19,9 @@ class TradeKingAPI(object):
         self.client.auth = OAuth1(CK, CS, OT, OS, signature_type='auth_header')
 
         self.format = response_format
-#~------------------------------------------------------------------------------
-#~Account Calls ----------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Account Calls ----------------------------------------------------------------
 
     def accounts(self):
         """This call will return detailed balance and holding information for each
@@ -71,9 +72,9 @@ class TradeKingAPI(object):
     def accounts_id_holdings(self, id):
         url = '{0}/accounts/{1}/holdings.{2}'.format(self.HOST, id, self.format)
         return self.client.get(url)
-        
-#~------------------------------------------------------------------------------
-#~Trade Calls ------------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Trade Calls ------------------------------------------------------------------
     def accounts_id_orders(self, id, method='get', fixml=None):
         url = '{0}/accounts/{1}/orders.{2}'.format(self.HOST, id, self.format)
         if method == 'get':
@@ -86,8 +87,9 @@ class TradeKingAPI(object):
     def accounts_id_orders_preview(self, id, fixml):
         url = '{0}/accounts/{1}/orders/preview.{2}'.format(self.HOST, id, self.format)
         return self.client.post(url, data=fixml)
-#~------------------------------------------------------------------------------
-#~Market Calls -----------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Market Calls -----------------------------------------------------------------
     def market_clock(self):
         url = '{0}/market/clock.{1}'.format(self.HOST, self.format)
         return self.client.get(url)
@@ -99,19 +101,19 @@ class TradeKingAPI(object):
 
     def market_historical_search(self, symbols, interval, startdate, enddate):
         url = '{0}/market/historical/search.{1}'.format(self.HOST, self.format)
-        payload = dict(symbols   = symbols, 
-                       interval  = interval, 
-                       startdate = startdate, 
-                       enddate   = enddate)
+        payload = dict(symbols=symbols,
+                       interval=interval,
+                       startdate=startdate,
+                       enddate=enddate)
         return self.client.get(url, params=payload)
 
     def market_news_search(self, keywords, startdate, enddate, symbols=None, maxhits=10):
         url = '{0}/market/news/search.{1}'.format(self.HOST, self.format)
-        payload = dict(keywords  = keywords, 
-                       symbols   = symbols, 
-                       maxhits   = maxhits,
-                       startdate = startdate, 
-                       enddate   = enddate)
+        payload = dict(keywords=keywords,
+                       symbols=symbols,
+                       maxhits=maxhits,
+                       startdate=startdate,
+                       enddate=enddate)
         return self.client.get(url, params=payload)
 
     def market_news_id(self, id):
@@ -138,13 +140,15 @@ class TradeKingAPI(object):
 
     def market_toplists(self):
         pass
-#~------------------------------------------------------------------------------
-#~Member Calls -----------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Member Calls -----------------------------------------------------------------
     def member_profile(self):
         url = '{0}/member/profile.{1}'.format(self.HOST, self.format)
         return self.client.get(url)
-#~------------------------------------------------------------------------------
-#~Utility Calls ----------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Utility Calls ----------------------------------------------------------------
     def utility_status(self):
         url = '{0}/utility/status.{1}'.format(self.HOST, self.format)
         return self.client.get(url)
@@ -152,8 +156,9 @@ class TradeKingAPI(object):
     def utility_version(self):
         url = '{0}/utility/version.{1}'.format(self.HOST, self.format)
         return self.client.get(url)
-#~------------------------------------------------------------------------------
-#~Watchlist Calls --------------------------------------------------------------
+
+    # ~------------------------------------------------------------------------------
+    # ~Watchlist Calls --------------------------------------------------------------
     def watchlists(self, name=None, symbols=None, method='get'):
         url = '{0}/watchlist.{1}'.format(self.HOST, self.format)
         if method.lower() == 'post':
@@ -193,7 +198,9 @@ class TradeKingAPI(object):
             return self.client.delete(url)
         else:
             raise 'Invalid method {}'.format(method)
-#~------------------------------------------------------------------------------
+
+
+# ~------------------------------------------------------------------------------
 
 if __name__ == "__main__":
     api = TradeKingAPI()
@@ -201,7 +208,7 @@ if __name__ == "__main__":
     print('accounts()')
     r = api.accounts()
     assert r.status_code == 200
-     
+
     print('accounts_balances()')
     r = api.accounts_balances()
     assert r.status_code == 200
@@ -209,5 +216,3 @@ if __name__ == "__main__":
 #    print('accounts_id()')
 #    r = api.accounts_id('38434709')
 #    assert r.status_code == 200
-
-
